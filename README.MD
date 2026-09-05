@@ -10,7 +10,7 @@
 
 ## 1. Resumen Ejecutivo & Impacto Financiero
 
-En operaciones de gran minería (equipos pesados CAEX y palas electromecánicas), la gestión de repuestos MRO (*Maintenance, Repair, and Operations*) representa uno de los mayores centros de costo y riesgo operativo.
+En las operaciones de la gran minería (equipos pesados CAEX y palas electromecánicas), la gestión de repuestos MRO (*Maintenance, Repair, and Operations*) representa uno de los mayores centros de costo y riesgo operativo.
 
 Este motor analítico implementa un backend relacional en **T-SQL nativo** para ejecutar auditoría forense y control de **3-Way Match** entre órdenes de compra, recepciones físicas de bodega e imputaciones de facturas.
 
