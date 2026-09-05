@@ -1,1 +1,20 @@
-.obsidian/ 
+# Obsidian local cache
+.obsidian/
+
+# SSMS & Visual Studio temporary files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+
+# SQL Server artifacts (Backups & DB files)
+*.bak
+*.ldf
+*.mdf
+*.log
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+.DS_Store
