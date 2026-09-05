@@ -47,6 +47,45 @@ MiningMRO_Engine/
 |**`core`**|Lógica de negocio, neteo transaccional y consumo BI.|`v_mro_3waymatch`, `v_sap_mm_mro_forensic`, `v_mro_calidad_datos_anomalias`|
 |**`audit`**|Persistencia histórica, gobernanza y excepciones.|`tb_log_anomalias_mro`, `sp_insert_mro_audit_log`|
 
+### Flujo de Datos y Linaje de Transformación
+
+```mermaid
+graph TD
+    subgraph SAP_ERP ["Capa ERP Transaccional (SAP MM)"]
+        EKKO["stg.EKKO<br/>(Cabecera Pedido)"]
+        EKPO["stg.EKPO<br/>(Posiciones & Precios MARC)"]
+        EKBE["stg.EKBE<br/>(Historial MIGO 101/102 & MIRO)"]
+        MARD["stg.MARD<br/>(Stock Almacén & SPEME)"]
+    end
+
+    subgraph CORE_LAYER ["Capa de Lógica de Negocio (Core Views)"]
+        V3WAY["core.v_mro_3waymatch<br/>• Neteo MIGO vs MIRO (shkzg)<br/>• Detección Desvío Maverick"]
+        VFORENSIC["core.v_sap_mm_mro_forensic<br/>• KPI Disponibilidad Crítica<br/>• Capital Retenido en Control Calidad"]
+        VANOMALIES["core.v_mro_calidad_datos_anomalias<br/>• Facturas sin Recepción<br/>• Posiciones Borradas (loekz)"]
+    end
+
+    subgraph AUDIT_LAYER ["Capa de Persistencia & Auditoría (ACID)"]
+        PROC["audit.sp_insert_mro_audit_log<br/>(Control Atómico & Error Handling)"]
+        TABLE_LOG[("audit.tb_log_anomalias_mro<br/>(Histórico de Fugas & Riegos)")]
+    end
+
+    EKKO --> V3WAY
+    EKPO --> V3WAY
+    EKBE --> V3WAY
+    EKPO --> VFORENSIC
+    MARD --> VFORENSIC
+    V3WAY --> VANOMALIES
+    VANOMALIES --> PROC
+    PROC --> TABLE_LOG
+
+    classDef erp fill:#1f2937,stroke:#3b82f6,stroke-width:1px,color:#fff;
+    classDef core fill:#111827,stroke:#10b981,stroke-width:1px,color:#fff;
+    classDef audit fill:#31102f,stroke:#ec4899,stroke-width:1px,color:#fff;
+    class EKKO,EKPO,EKBE,MARD erp;
+    class V3WAY,VFORENSIC,VANOMALIES core;
+    class PROC,TABLE_LOG audit;
+```
+
 ## 3. Lógica Transaccional de Negocio
 
 ### Neteo de Almacén SAP MM
