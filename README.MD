@@ -20,6 +20,9 @@ Este motor analítico implementa un backend relacional en **T-SQL nativo** para 
 * **USD 22.821.690,00 en Facturación sin Entrada de Mercancía:** 170 documentos de factura procesados contablemente sin recepción física validada (MIGO ausente).
 * **USD 6.695.040,00 en Posiciones Anuladas Descartadas:** 45 registros de compras canceladas en ERP (`loekz = 'X'`) aislados para prevenir duplicidad en compromisos presupuestarios.
 
+<p align="center">
+  <img src="docs/img/audit_metrics.png" alt="Resumen Financiero y Auditoría MRO" width="90%">
+</p>
 ---
 
 ## 2. Arquitectura de Datos por Capas
@@ -74,6 +77,10 @@ El backend está optimizado para garantizar tiempos de respuesta sub-segundo pre
 
 * **`IX_stg_mard_speme_quality`:**  
   Índice no agrupado sobre `(speme)` con `INCLUDE (matnr, werks, lgort, labst)` sobre `stg.MARD` para aislar instantáneamente el inventario bloqueado en control de calidad.
+
+<p align="center">
+  <img src="docs/img/execution_plan.png" alt="Plan de Ejecución Real sin Key Lookups" width="90%">
+</p>
 
 ---
 
