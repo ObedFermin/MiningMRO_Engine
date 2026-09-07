@@ -1,9 +1,11 @@
-/* ======================================================================================
-   PROYECTO: Mining MRO Analytics Engine
-   MODULO  : 02_ingestion / Seed Data Staging SAP MM
-   DESCRIP : Carga transaccional base para validación de lógica 3-Way Match y auditoría MARC.
-   TABLAS  : stg.EKKO, stg.EKPO, stg.EKBE, stg.MARD
-   ====================================================================================== */
+
+/* ====================================================================================
+PROYECTO    : Mining MRO Analytics Engine
+MODULO      : 02_ingestion
+OBJETO      : 01_bulk_insert_sap_data.sql
+ESTANDAR    : ANSI SQL / T-SQL 2022
+DESCRIPCION : Carga transaccional base para validación de lógica 3-Way Match y auditoría MARC
+====================================================================================== */
 
 USE Bunker_MRO;
 

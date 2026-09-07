@@ -1,3 +1,12 @@
+
+/* ==============================================================================
+   PROYECTO    : Mining MRO Analytics Engine
+   MODULO      : 04_stored_procedures
+   OBJETO      : 02_verify_errors.sql
+   ESTANDAR    : ANSI SQL / T-SQL 2022
+   DESCRIPCION : Certificación funcional de SP y persistencia transaccional en log de anomalías.
+   ============================================================================== */
+
 USE Bunker_MRO;
 
 -- 1. Ejecución de prueba con datos válidos

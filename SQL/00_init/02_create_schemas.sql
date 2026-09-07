@@ -1,8 +1,10 @@
-/* ======================================================================================
-   PROYECTO: Mining MRO Analytics Engine
-   MODULO  : 00_init / 02_create_schemas.sql
-   DESCRIP : Creación defensiva de esquemas arquitectónicos: stg, core y audit.
-   ====================================================================================== */
+/* ==============================================================================
+   PROYECTO    : Mining MRO Analytics Engine
+   MODULO      : 00_init
+   OBJETO      : 02_create_schemas.sql
+   ESTANDAR    : ANSI SQL / T-SQL 2022
+   DESCRIPCION : Creación defensiva de esquemas arquitectónicos: stg, core y audit.
+   ============================================================================== */
 
 USE Bunker_MRO;
 
@@ -25,3 +27,5 @@ SELECT
 FROM sys.schemas s
 INNER JOIN sys.database_principals dp ON dp.principal_id = s.principal_id
 WHERE s.name IN ('stg', 'core', 'audit');
+
+

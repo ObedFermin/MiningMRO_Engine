@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 01_ddl_tables
-   OBJETO     : audit.tb_log_anomalias_mro
+   OBJETO     : 05_tb_audit_log_anomalias.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Tabla de persistencia para trazabilidad de descalces y fugas financieras.
    ====================================================================================== */

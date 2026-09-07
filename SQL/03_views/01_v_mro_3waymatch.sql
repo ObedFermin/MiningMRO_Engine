@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 03_views
-   OBJETO     : core.v_mro_3waymatch
+   OBJETO     : 01_v_mro_3waymatch.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Matriz de neteo transaccional SAP MM (101 vs 102 / MIGO vs MIRO)
                 y control de sobreprecios (Maverick Buying) en repuestos MRO.

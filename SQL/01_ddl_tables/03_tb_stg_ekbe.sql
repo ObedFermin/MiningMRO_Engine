@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 01_ddl_tables
-   OBJETO     : stg.EKBE
+   OBJETO     : 03_tb_stg_ekbe.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Historial transaccional de movimientos de mercancía (MIGO) y facturas (MIRO).
    ====================================================================================== */

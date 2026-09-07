@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 01_ddl_tables
-   OBJETO     : stg.EKKO
+   OBJETO     : 01_tb_stg_ekko.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Tabla de staging para cabeceras de documentos de compras SAP MM.
    ====================================================================================== */

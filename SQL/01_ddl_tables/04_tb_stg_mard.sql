@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 01_ddl_tables
-   OBJETO     : stg.MARD
+   OBJETO     : 04_tb_stg_mard.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Datos de inventario por material, centro logístico y estado de calidad.
    ====================================================================================== */

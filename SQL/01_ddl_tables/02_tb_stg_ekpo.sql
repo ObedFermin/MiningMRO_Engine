@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 01_ddl_tables
-   OBJETO     : stg.EKPO
+   OBJETO     : 02_tb_stg_ekpo.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Tabla de staging para posiciones y especificación de repuestos MRO.
    ====================================================================================== */

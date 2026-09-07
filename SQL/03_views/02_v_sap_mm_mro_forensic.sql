@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 03_views
-   OBJETO     : core.v_sap_mm_mro_forensic
+   OBJETO     : 02_v_sap_mm_mro_forensic.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Cuantificación de stock bloqueado en control de calidad (SPEME)
                 valorizado al precio promedio de contrato.

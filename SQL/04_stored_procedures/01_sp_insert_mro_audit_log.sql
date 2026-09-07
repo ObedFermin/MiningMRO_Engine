@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 04_stored_procedures
-   OBJETO     : audit.sp_insert_mro_audit_log
+   OBJETO     : 01_sp_insert_mro_audit_log.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Procedimiento transaccional con aislamiento ACID para persistir hallazgos
                 de auditoría forense en audit.tb_log_anomalias_mro.

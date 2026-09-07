@@ -1,7 +1,7 @@
 /* ======================================================================================
    PROYECTO   : Mining MRO Analytics Engine
    MODULO     : 03_views
-   OBJETO     : core.v_mro_calidad_datos_anomalias
+   OBJETO     : 03_v_mro_calidad_datos_anomalias.sql
    ESTANDAR   : ANSI SQL / T-SQL 2022
    DESCRIPCION: Aislamiento y catalogación de anomalías de calidad de datos ERP / TI
                 y riesgos de control interno (borrados, descalces, facturas huérfanas).
