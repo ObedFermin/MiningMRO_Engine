@@ -6,8 +6,6 @@
    DESCRIPCION: Auditoría y certificación de índices activos en el motor relacional.
    ====================================================================================== */
 
-USE Bunker_MRO;
-
 SELECT 
     s.name AS Esquema,
     t.name AS Tabla,

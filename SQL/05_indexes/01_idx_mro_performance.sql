@@ -7,15 +7,13 @@
                 los cruces de 3-Way Match y la auditoría de inventario SPEME.
    ====================================================================================== */
 
-USE Bunker_MRO;
-
 -- 1. Optimización en Historial Transaccional (EKBE)
 -- Acelera la agregación de las CTEs migo y miro filtradas por vgabe y shkzg
 DROP INDEX IF EXISTS IX_stg_ekbe_3way_performance ON stg.EKBE;
 
 CREATE NONCLUSTERED INDEX IX_stg_ekbe_3way_performance
 ON stg.EKBE (ebeln, ebelp, vgabe)
-INCLUDE (menge, wrbtr, shkzg);
+INCLUDE (menge, wrbtr, shkzg, bwart);
 
 -- 2. Optimización en Posiciones de Pedido (EKPO)
 -- Acelera el JOIN principal y el filtrado de registros borrados lógicamente (loekz)
