@@ -121,8 +121,16 @@ Para prevenir falsos positivos provocados por devoluciones o reversas de faena e
 * **Flag de Fricción Operacional:** Si la transacción requirió reversas pero netea a balance cero, se cataloga como `HISTORIAL_CON_REVERSAS` para auditoría de proveedores y almacenes.
 
 ### Regla Forense 3-Way Match
-El motor clasifica el estado de cada posición según una jerarquía evaluada:
-$$\text{Estado 3-Way} =  \begin{cases}  \text{FACTURA\_SIN\_RECEPCION} & \text{si } \text{Cant}_{MIGO} = 0 \land \text{Cant}_{MIRO} > 0 \\ \text{DESCALCE\_PRECIO\_MAVERICK} & \text{si } \text{P.U.}_{MIRO} > (\text{P.U.}_{Contrato} + 0.01) \\ \text{DESCALCE\_CANTIDAD} & \text{si } \text{Cant}_{MIRO} > \text{Cant}_{MIGO} \\ \text{ENTREGA\_PARCIAL} & \text{si } \text{Cant}_{MIGO} < \text{Cant}_{PO} \land \text{Cant}_{MIGO} > 0 \\ \text{CONFORME\_3WAY} & \text{en cualquier otro caso balanceado} \end{cases}$$
+
+El motor clasifica el estado de cada posición evaluando las transacciones bajo la siguiente jerarquía:
+
+```text
+SI Cantidad_MIGO = 0 Y Cantidad_MIRO > 0       -> 'FACTURA_SIN_RECEPCION'
+SI P.U._MIRO > (P.U._Contrato + 0.01)          -> 'DESCALCE_PRECIO_MAVERICK'
+SI Cantidad_MIRO > Cantidad_MIGO               -> 'DESCALCE_CANTIDAD'
+SI Cantidad_MIGO < Cantidad_PO Y MIGO > 0     -> 'ENTREGA_PARCIAL'
+EN CUALQUIER OTRO CASO                         -> 'CONFORME_3WAY'
+```
 
 
 ---
