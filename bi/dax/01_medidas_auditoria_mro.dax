@@ -1,0 +1,89 @@
+/* ==============================================================================
+   PROYECTO    : Mining MRO Analytics Engine
+   MODULO      : bi/dax
+   OBJETO      : 01_medidas_auditoria_mro.dax
+   ESTANDAR    : Tabular DAX / Power BI Desktop
+   DESCRIPCION : Capa de métricas semánticas para KPIs directivos y matriz forense
+                 de compras, inventario inmovilizado y gobierno de datos.
+   ============================================================================== */
+
+// ------------------------------------------------------------------------------
+// 1. FUGA FINANCIERA DIRECTA (MAVERICK SPEND)
+// ------------------------------------------------------------------------------
+// Cuantifica la pérdida económica real ocasionada por compras spot a tarifas 
+// que superan los precios acordados en los contratos marco corporativos (MARC).
+// Origen: core.v_mro_3waymatch [fuga_maverick_usd]
+Fuga Maverick USD = 
+SUM('core v_mro_3waymatch'[fuga_maverick_usd])
+
+
+// ------------------------------------------------------------------------------
+// 2. CAPITAL DE TRABAJO INMOVILIZADO (STOCK BLOQUEADO EN CALIDAD)
+// ------------------------------------------------------------------------------
+// Valoriza las existencias físicas retenidas en pañol bajo inspección técnica 
+// (estado contable SPEME) multiplicadas por el costo unitario ponderado de contrato.
+// Origen: core.v_sap_mm_mro_forensic [capital_inmovilizado_speme_usd]
+Capital Inmovilizado USD = 
+SUM('core v_sap_mm_mro_forensic'[capital_inmovilizado_speme_usd])
+
+
+// ------------------------------------------------------------------------------
+// 3. TASA DE CUMPLIMIENTO DEL CONTROL 3-WAY MATCH
+// ------------------------------------------------------------------------------
+// Porcentaje de posiciones de compra que concilian en cantidad y precio unitario 
+// entre la Orden de Compra (PO), la Recepción en Bodega (MIGO) y la Factura (MIRO).
+// Origen: core.v_mro_3waymatch [estado_3way]
+% Cumplimiento 3WayMatch = 
+VAR _LineasConformes = 
+    CALCULATE(
+        COUNTROWS('core v_mro_3waymatch'),
+        'core v_mro_3waymatch'[estado_3way] = "CONFORME_3WAY"
+    )
+VAR _TotalLineas = 
+    COUNTROWS('core v_mro_3waymatch')
+RETURN
+    DIVIDE(
+        _LineasConformes,
+        _TotalLineas,
+        0.00
+    )
+
+
+// ------------------------------------------------------------------------------
+// 4. EXPOSICIÓN TOTAL POR ANOMALÍAS DE PROCESO Y TI
+// ------------------------------------------------------------------------------
+// Monto global expuesto en transacciones con incidencias de control interno: 
+// facturas huérfanas sin recepción física, descalces tarifarios y posiciones 
+// anuladas contablemente (loekz = 'X').
+// Origen: core.v_mro_calidad_datos_anomalias [impacto_financiero_usd]
+Impacto Anomalias USD = 
+SUM('core v_mro_calidad_datos_anomalias'[impacto_financiero_usd])
+
+
+// ------------------------------------------------------------------------------
+// 5. CONTEO DE LÍNEAS CON FRICCIÓN OPERACIONAL (REVERSAS / NOTAS DE CRÉDITO)
+// ------------------------------------------------------------------------------
+// Identifica transacciones que, aun cuadrando en balance final, generaron 
+// retrabajo administrativo debido a devoluciones en patio (102) o notas de crédito (H).
+// Origen: core.v_mro_3waymatch [flag_friccion_operacional]
+Total Lineas con Friccion = 
+CALCULATE(
+    COUNTROWS('core v_mro_3waymatch'),
+    'core v_mro_3waymatch'[flag_friccion_operacional] = "HISTORIAL_CON_REVERSAS"
+)
+
+
+// ------------------------------------------------------------------------------
+// 6. FORMATO CONDICIONAL DINÁMICO: COLOR DE FUENTE EN MATRIZ FORENSE
+// ------------------------------------------------------------------------------
+// Garantiza legibilidad ejecutiva (WCAG / IBCS) cambiando a texto blanco (#FFFFFF)
+// sobre fondos rojo oscuro en celdas con fuga Maverick superior a USD 2.000.000.
+// Uso: Formato condicional de fuente en [Fuga Maverick USD]
+Color Fuente Fuga Maverick = 
+VAR _Fuga = [Fuga Maverick USD]
+RETURN
+    IF(
+        _Fuga >= 2000000,
+        "#FFFFFF",  -- Texto blanco sobre rojo intenso
+        "#0F172A"   -- Azul marino oscuro corporativo sobre tonos claros/neutros
+    )
