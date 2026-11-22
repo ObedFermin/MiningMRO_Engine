@@ -25,7 +25,7 @@ Esta plataforma implementa un **motor relacional de auditoría preventiva y fore
 
 ### Resultados del Modelo sobre el Escenario Simulado (Corte Consolidado):
 
-* **USD 9,87M en Exposición por Varianza de Precio y Desvío de Tarifa (*Maverick / Off-Contract Variance*):** Sobrecosto potencial detectado en facturación (`MIRO`) por encima del precio neto pactado en la orden de compra / acuerdo marco (`EKPO-NETPR` / `KONNR`).
+* **USD 9,87M en Exposición por Varianza de Precio y Desvío de Tarifa (*Maverick / Off-Contract Variance*):** Sobrecosto potencial detectado en facturación (`MIRO`) por encima del precio neto pactado en la orden de compra (`EKPO-NETPR`).
 * **USD 3,46M en Capital Inmovilizado en Calidad (`MARD-SPEME`):** Componentes críticos retenidos bajo bloqueo de inspección técnica en pañoles y bodegas operativas, restringiendo la disponibilidad operativa y el capital de trabajo.
 * **69,55% de Cumplimiento 3-Way Match:** Identificación de un ~30,45% de posiciones de compra con fricción operativa o descalces entre la Orden de Compra (`PO`), la Recepción Física (`MIGO`) y la Recepción de Factura (`MIRO`).
 * **USD 39,39M de Exposición Global en Transacciones Observadas:** Volumen bruto transaccional comprometido en registros que presentan anomalías de integridad, facturas sin recepción física registrada o partidas con borrado lógico (`LOEKZ = 'X'`).
@@ -50,15 +50,14 @@ MiningMRO_Engine/
 │   ├── 05_indexes/            --> Índices Non-Clustered y Covering Indexes para acelerar lecturas
 │   └── 06_tests/              --> Test Harness unitario con fixtures deterministas en memoria
 ├── bi/
-│   ├── pbix/                  --> Archivo maestro Power BI (Mro_mining.pbix)
 │   └── dax/                   --> Medidas DAX de auditoría documentadas en texto plano
 ├── docs/
-│   ├── SPEC.md                --> Especificación técnica y catálogo de reglas de auditoría
+│   ├── ESPEC.md               --> Especificación técnica y catálogo de reglas de auditoría
 │   └── img/                   --> Evidencias de planes de ejecución y pruebas unitarias
 ├── reports/
-│   ├── Mro_mining.pdf         --> Entregable ejecutivo consolidado de 1 página
+│   ├── Mro_mining.pdf         --> Entregable ejecutivo consolidado (2 páginas)
 │   └── dashboard_preview.png  --> Captura del dashboard en alta resolución
-└── README.md
+└── README.MD
 ```
 
 ### Linaje de Datos: Del Diccionario SAP MM a la Decisión Operacional
@@ -66,7 +65,7 @@ MiningMRO_Engine/
 ```mermaid
 graph TD
     subgraph SAP_ERP ["1. Ingestión Staging ERP (SAP MM)"]
-        EKKO["stg.EKKO<br/>(Cabecera OC & Acuerdos KONNR)"]
+        EKKO["stg.EKKO<br/>(Cabecera OC, Proveedor LIFNR & Fecha AEDAT)"]
         EKPO["stg.EKPO<br/>(Posiciones, Precio Neto NETPR & LOEKZ)"]
         EKBE["stg.EKBE<br/>(Historial MIGO 101/102 & MIRO)"]
         MARD["stg.MARD<br/>(Saldos Almacén LABST & Bloqueo SPEME)"]
@@ -75,7 +74,7 @@ graph TD
     subgraph CORE_SQL ["2. Motor de Conciliación T-SQL (Core Layer)"]
         V3WAY["core.v_mro_3waymatch<br/>• Neteo MIGO vs MIRO (SHKZG)<br/>• Detección Varianza de Precio<br/>• Flag Fricción Operacional"]
         VFORENSIC["core.v_sap_mm_mro_forensic<br/>• Valorización Stock Bloqueado (SPEME)"]
-        VANOMALIES["core.v_mro_data_quality_anomalies<br/>• Facturas sin Recepción (MIGO = 0)<br/>• Auditoría Borrado Lógico (LOEKZ = 'X')"]
+        VANOMALIES["core.v_mro_calidad_datos_anomalias<br/>• Facturas sin Recepción (MIGO = 0)<br/>• Auditoría Borrado Lógico (LOEKZ = 'X')"]
     end
 
     subgraph AUDIT_LAYER ["3. Trazabilidad & Logs ACID"]
@@ -135,6 +134,7 @@ SI Cantidad_MIGO = 0 Y Cantidad_MIRO > 0       -> 'FACTURA_SIN_RECEPCION'
 SI P.U._MIRO > (P.U._Contrato_PO + 0.01)       -> 'DESCALCE_PRECIO_MAVERICK'
 SI Cantidad_MIRO > Cantidad_MIGO               -> 'DESCALCE_CANTIDAD'
 SI Cantidad_MIGO < Cantidad_PO Y MIGO > 0      -> 'ENTREGA_PARCIAL'
+SI Cantidad_MIGO = 0 Y Cantidad_MIRO = 0       -> 'PENDIENTE_RECEPCION'
 EN CUALQUIER OTRO CASO                         -> 'CONFORME_3WAY'
 ```
 
@@ -231,4 +231,4 @@ El tablero de control aplica los principios del **International Business Communi
    * `SQL/04_stored_procedures/` *(procedimiento de registro ACID)*
    * `SQL/05_indexes/` *(creación de índices de cobertura)*
 3. Validar la integridad de las reglas ejecutando el test suite: `SQL/06_tests/01_test_harness_3way_fixtures.sql`.
-4. Abrir el archivo `bi/pbix/Mro_mining.pbix` en **Power BI Desktop**, apuntar el parámetro de origen de datos a tu instancia local de SQL Server (base `Bunker_MRO`) y actualizar el modelo.
+4. Revisar la capa semántica y los entregables ejecutivos: las medidas DAX están documentadas en `bi/dax/01_medidas_auditoria_mro.dax` y las salidas visuales consolidadas en `reports/dashboard_preview.png` y `reports/Mro_mining.pdf` *(el archivo `.pbix` editable se resguarda localmente y está disponible para demostración en vivo)*.
